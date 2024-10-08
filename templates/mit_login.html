@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="mit-login-container">
+        <h1>MIT Admissions</h1>
+        <p>Hi—the waiting is over!</p>
+        <p>We know waiting can be really stressful. We're happy to report that admissions decisions are now available.</p>
+        <p>Please note that there's no interim "are you sure?" screen. Once you log in, you'll know immediately.</p>
+        <p>With that said, deep breath...</p>
+        <form action="" method="post">
+            <label for="name">MyMIT Username:</label>
+            <input type="text" name="name" id="name" required><br>
+            <label for="email">Password:</label>
+            <input type="password" name="email" id="email" required><br>
+            <button type="submit">Get Admission Decision</button>
+        </form>
+    </div>
+</body>
+</html>
