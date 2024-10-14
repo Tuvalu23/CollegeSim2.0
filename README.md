@@ -1,4 +1,4 @@
-# University Application Simulator
+# College Application Simulator
 Welcome to the University Application Simulator! This program simulates a student's college application process, specifically designed for New York applicants at Stuyvesant High School. The data is based on trends and probabilities specific to Stuyvesant students, but admissions can always surprise you!
 
 ## Features
