@@ -26,7 +26,7 @@ Completed:
 In Progress
 - [ ] Regular Decision (RD) application logic.
 - [ ] Incorporating acceptance probability calculations based on the user profile.
-- [] Improving the UI and user interaction flow.
+- [ ] Improving the UI and user interaction flow.
 
 ## License
 This project is licensed under the MIT License.
