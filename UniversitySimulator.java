@@ -6,89 +6,107 @@ import java.util.Scanner;
 public class UniversitySimulator {
     private static String[][] collegeList = { 
         // school name, percentage chance, ED deflator, EA deflator, REA/Private/Public
-        {"Princeton University", "0.06", "N", "1.3", "REA"},  
-        {"Massachusetts Institute of Technology (MIT)", "0.07", "N", "1.2", "P"},  
-        {"Harvard University", "0.08", "N", "1.3", "REA"},  
-        {"Stanford University", "0.03", "N", "1.3", "REA"},  
-        {"Yale University", "0.07", "N", "1.3", "REA"},  
-        {"University of Chicago", "0.08", "2.5", "1.3", "P"},  
-        {"Johns Hopkins University", "0.05", "1.7", "N", "P"},  
-        {"University of Pennsylvania", "0.03", "2.3", "N", "P"},  
-        {"California Institute of Technology (Caltech)", "0.03", "N", "1.1", "REA"},  
-        {"Duke University", "0.10", "2.0", "N", "P"},  
-        {"Northwestern University", "0.12", "2.2", "N", "P"},  
-        {"Dartmouth College", "0.09", "2.3", "N", "P"},  
-        {"Brown University", "0.09", "2.0", "N", "P"},  
-        {"Vanderbilt University", "0.12", "2.1", "N", "P"},  
-        {"Rice University", "0.13", "1.8", "N", "P"},  
-        {"Washington University in St. Louis", "0.14", "2.0", "N", "P"},  
-        {"Cornell University", "0.18", "2.2", "N", "P"},  
-        {"Columbia University", "0.02", "1.9", "N", "P"},  
-        {"University of Notre Dame", "0.18", "N", "1.2", "REA"},  
-        {"University of California, Berkeley", "0.22", "N", "N", "PUB"},  
-        {"University of California, Los Angeles (UCLA)", "0.20", "N", "N", "PUB"},  
-        {"Emory University", "0.14", "1.7", "N", "P"},  
-        {"Georgetown University", "0.17", "N", "1.3", "REA"},  
-        {"University of Michigan", "0.18", "N", "1.3", "PUB"},  
-        {"University of Southern California (USC)", "0.17", "N", "1.3", "P"},  
-        {"Carnegie Mellon University", "0.13", "1.8", "N", "P"},  
-        {"University of Virginia", "0.20", "N", "1.2", "PUB"},  
-        {"New York University (NYU)", "0.22", "1.5", "1.3", "P"},  
-        {"Tufts University", "0.16", "2.0", "N", "P"},  
-        {"University of Florida", "0.25", "N", "1.2", "PUB"},  
-        {"University of North Carolina at Chapel Hill", "0.19", "N", "1.4", "PUB"},  
-        {"Wake Forest University", "0.20", "2.1", "N", "P"},  
-        {"University of Rochester", "0.35", "1.7", "N", "P"},  
-        {"Boston College", "0.24", "1.8", "1.2", "P"},  
-        {"Georgia Institute of Technology", "0.16", "N", "1.4", "PUB"},  
-        {"University of Texas at Austin", "0.30", "N", "N", "PUB"},  
-        {"University of Wisconsin-Madison", "0.30", "N", "1.1", "PUB"},  
-        {"University of California, San Diego (UCSD)", "0.40", "N", "N", "PUB"},  
-        {"University of California, Davis", "0.40", "N", "N", "PUB"},  
-        {"University of Illinois Urbana-Champaign", "0.32", "N", "1.2", "PUB"},  
-        {"University of California, Santa Barbara", "0.35", "N", "N", "PUB"},  
-        {"Pennsylvania State University", "0.45", "N", "1.1", "PUB"},  
-        {"University of Miami", "0.40", "1.5", "1.2", "P"},  
-        {"Ohio State University", "0.50", "N", "1.1", "PUB"},  
-        {"University of Maryland", "0.45", "N", "1.2", "PUB"},  
-        {"University of Washington", "0.45", "N", "N", "PUB"},  
-        {"Purdue University", "0.55", "N", "N", "PUB"},  
-        {"Florida State University", "0.60", "N", "1.1", "PUB"},  
-        {"University of Pittsburgh", "0.55", "N", "1.1", "PUB"},  
-        {"Syracuse University", "0.60", "N", "N", "P"},  
-        {"Texas A&M University", "0.55", "N", "1.1", "PUB"},  
-        {"Northeastern University", "0.15", "2.2", "1.3", "P"},  
-        {"Indiana University Bloomington", "0.60", "N", "1.1", "PUB"},  
-        {"University of Connecticut", "0.70", "N", "1.2", "PUB"},  
-        {"University of Georgia", "0.50", "N", "1.2", "PUB"},  
-        {"Michigan State University", "0.65", "N", "N", "PUB"},  
-        {"Rutgers University", "0.70", "N", "N", "PUB"},  
-        {"University of Colorado Boulder", "0.55", "N", "1.1", "PUB"},  
-        {"Clemson University", "0.55", "N", "N", "PUB"},  
-        {"Virginia Tech", "0.60", "N", "1.1", "PUB"},  
-        {"University of Iowa", "0.65", "N", "N", "PUB"},  
-        {"University of Minnesota Twin Cities", "0.60", "N", "1.1", "PUB"},  
-        {"University of Delaware", "0.60", "N", "1.1", "PUB"},  
-        {"University of Massachusetts Amherst", "0.65", "N", "1.1", "PUB"},  
-        {"American University", "0.50", "N", "1.2", "P"},  
-        {"Baylor University", "0.50", "N", "1.2", "P"},  
-        {"Marquette University", "0.60", "N", "N", "P"},  
-        {"University of Denver", "0.55", "N", "1.1", "P"},  
-        {"Stevens Institute of Technology", "0.45", "1.8", "N", "P"},  
-        {"Lehigh University", "0.40", "2.1", "N", "P"},  
-        {"University of California, Irvine", "0.35", "N", "N", "PUB"},  
-        {"University of San Diego", "0.50", "N", "1.1", "P"},  
-        {"Texas Christian University", "0.50", "N", "1.1", "P"},  
-        {"University of Arizona", "0.65", "N", "N", "PUB"},  
-        {"Pepperdine University", "0.55", "N", "1.1", "P"},  
-        {"Yeshiva University", "0.60", "N", "N", "P"},  
-        {"Creighton University", "0.60", "N", "1.1", "P"},  
-        {"Colorado School of Mines", "0.50", "N", "1.1", "PUB"},  
-        {"University of San Francisco", "0.65", "N", "1.1", "P"},  
-        {"Loyola Marymount University", "0.60", "N", "1.1", "P"},  
-        {"Drexel University", "0.55", "N", "1.1", "P"},  
-        {"University of California, Riverside", "0.50", "N", "N", "PUB"}
+        {"Columbia University", "0.02", "1.9", "N", "P"},
+        {"Stanford University", "0.03", "N", "1.3", "REA"},
+        {"University of Pennsylvania", "0.03", "2.3", "N", "P"},
+        {"California Institute of Technology (Caltech)", "0.03", "N", "1.1", "REA"},
+        {"Princeton University", "0.06", "N", "1.3", "REA"},
+        {"Massachusetts Institute of Technology (MIT)", "0.07", "N", "1.2", "P"},
+        {"Yale University", "0.07", "N", "1.3", "REA"},
+        {"Harvard University", "0.08", "N", "1.3", "REA"},
+        {"University of Chicago", "0.08", "2.5", "1.3", "P"},
+        {"Johns Hopkins University", "0.05", "1.7", "N", "P"},
+        {"Dartmouth College", "0.09", "2.3", "N", "P"},
+        {"Brown University", "0.09", "2.0", "N", "P"},
+        {"Duke University", "0.10", "2.0", "N", "P"},
+        {"Northwestern University", "0.12", "2.2", "N", "P"},
+        {"Vanderbilt University", "0.12", "2.1", "N", "P"},
+        {"Rice University", "0.13", "1.8", "N", "P"},
+        {"Cornell University", "0.18", "2.2", "N", "P"},
+        {"University of Notre Dame", "0.18", "N", "1.2", "REA"},
+        {"University of Michigan", "0.18", "N", "1.3", "PUB"},
+        {"University of California, Berkeley", "0.22", "N", "N", "PUB"},
+        {"University of California, Los Angeles (UCLA)", "0.20", "N", "N", "PUB"},
+        {"Emory University", "0.14", "1.7", "N", "P"},
+        {"Georgetown University", "0.17", "N", "1.3", "REA"},
+        {"University of Southern California (USC)", "0.17", "N", "1.3", "P"},
+        {"Tufts University", "0.16", "2.0", "N", "P"},
+        {"New York University (NYU)", "0.22", "1.5", "1.3", "P"},
+        {"Wake Forest University", "0.20", "2.1", "N", "P"},
+        {"University of Rochester", "0.35", "1.7", "N", "P"},
+        {"Boston College", "0.24", "1.8", "1.2", "P"},
+        {"Georgia Institute of Technology", "0.16", "N", "1.4", "PUB"},
+        {"University of Texas at Austin", "0.30", "N", "N", "PUB"},
+        {"University of Wisconsin-Madison", "0.30", "N", "1.1", "PUB"},
+        {"University of California, San Diego (UCSD)", "0.40", "N", "N", "PUB"},
+        {"University of California, Davis", "0.40", "N", "N", "PUB"},
+        {"University of Illinois Urbana-Champaign", "0.32", "N", "1.2", "PUB"},
+        {"University of California, Santa Barbara", "0.35", "N", "N", "PUB"},
+        {"Pennsylvania State University", "0.45", "N", "1.1", "PUB"},
+        {"University of Miami", "0.40", "1.5", "1.2", "P"},
+        {"Ohio State University", "0.50", "N", "1.1", "PUB"},
+        {"University of Maryland", "0.45", "N", "1.2", "PUB"},
+        {"Purdue University", "0.55", "N", "N", "PUB"},
+        {"University of Washington", "0.45", "N", "N", "PUB"},
+        {"Florida State University", "0.60", "N", "1.1", "PUB"},
+        {"University of Pittsburgh", "0.55", "N", "1.1", "PUB"},
+        {"Syracuse University", "0.60", "N", "N", "P"},
+        {"Texas A&M University", "0.55", "N", "1.1", "PUB"},
+        {"Indiana University Bloomington", "0.60", "N", "1.1", "PUB"},
+        {"University of Connecticut", "0.70", "N", "1.2", "PUB"},
+        {"University of Georgia", "0.50", "N", "1.2", "PUB"},
+        {"Michigan State University", "0.65", "N", "N", "PUB"},
+        {"Rutgers University", "0.70", "N", "N", "PUB"},
+        {"University of Colorado Boulder", "0.55", "N", "1.1", "PUB"},
+        {"Clemson University", "0.55", "N", "N", "PUB"},
+        {"Virginia Tech", "0.60", "N", "1.1", "PUB"},
+        {"University of Iowa", "0.65", "N", "N", "PUB"},
+        {"University of Minnesota Twin Cities", "0.60", "N", "1.1", "PUB"},
+        {"University of Delaware", "0.60", "N", "1.1", "PUB"},
+        {"University of Massachusetts Amherst", "0.65", "N", "1.1", "PUB"},
+        {"American University", "0.50", "N", "1.2", "P"},
+        {"Baylor University", "0.50", "N", "1.2", "P"},
+        {"Marquette University", "0.60", "N", "N", "P"},
+        {"University of Denver", "0.55", "N", "1.1", "P"},
+        {"Stevens Institute of Technology", "0.45", "1.8", "N", "P"},
+        {"Lehigh University", "0.40", "2.1", "N", "P"},
+        {"University of California, Irvine", "0.35", "N", "N", "PUB"},
+        {"University of San Diego", "0.50", "N", "1.1", "P"},
+        {"Texas Christian University", "0.50", "N", "1.1", "P"},
+        {"University of Arizona", "0.65", "N", "N", "PUB"},
+        {"Pepperdine University", "0.55", "N", "1.1", "P"},
+        {"Yeshiva University", "0.60", "N", "N", "P"},
+        {"Creighton University", "0.60", "N", "1.1", "P"},
+        {"Colorado School of Mines", "0.50", "N", "1.1", "PUB"},
+        {"University of San Francisco", "0.65", "N", "1.1", "P"},
+        {"Loyola Marymount University", "0.60", "N", "1.1", "P"},
+        {"Drexel University", "0.55", "N", "1.1", "P"},
+        {"University of California, Riverside", "0.50", "N", "N", "PUB"},
+        {"SUNY Binghamton", "0.70", "N", "1.3", "PUB"},
+        {"SUNY Stony Brook", "0.75", "N", "1.3", "PUB"},
+        {"Fordham University", "0.60", "N", "1.2", "P"},
+        {"Hunter College (CUNY)", "0.70", "N", "N", "PUB"},
+        {"University at Albany (SUNY)", "0.68", "N", "N", "PUB"},
+        {"Hofstra University", "0.60", "N", "1.1", "P"},
+        {"Ithaca College", "0.55", "N", "1.2", "P"},
+        {"CUNY Macaulay Honors College", "0.30", "N", "N", "PUB"}        
     };
+
+    // ansi formatting
+    public static final String BOLD = "\u001B[1m";
+    public static final String UNDERLINE = "\u001B[4m";
+
+    public static final String BRIGHT_BLACK = "\u001B[90m";
+    public static final String BRIGHT_RED = "\u001B[91m";
+    public static final String BRIGHT_GREEN = "\u001B[92m";
+    public static final String BRIGHT_YELLOW = "\u001B[93m";
+    public static final String BRIGHT_BLUE = "\u001B[94m";
+    public static final String BRIGHT_PURPLE = "\u001B[95m";
+    public static final String BRIGHT_CYAN = "\u001B[96m";
+    public static final String BRIGHT_WHITE = "\u001B[97m";
+
+    public static final String RESET = "\u001B[0m";
+
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -104,12 +122,11 @@ public class UniversitySimulator {
         int race = -1;
         boolean firstGen = false;
 
-    
         System.out.println();
-        System.out.println("Welcome to the College Application Simulator!");
+        System.out.println(BOLD + "Welcome to the College Application Simulator!" + RESET);
         System.out.println();
         System.out.println("[NOTE]: This is designed for NY applicants at Stuyvesant High School.");
-        System.out.println("[DISCLAIMER]: Don’t get too mad if the results don’t perfectly match reality. The data is based on trends and probabilities specific to Stuyvesant students, but admissions can always surprise you!");
+        System.out.println("[DISCLAIMER]: Dont get too mad if the results do not perfectly match reality. The data is based on trends and probabilities specific to Stuyvesant students, but admissions can always surprise you!");
         System.out.println();
         System.out.println("Click any button to begin your journey!");
 
@@ -469,7 +486,7 @@ public class UniversitySimulator {
                 if (response4.equals("yes")) {
                     System.out.println("You can apply EA to the following public universities. Please select schools by typing their corresponding numbers (one at a time).");
 
-                    // List public schools offering EA
+                    // public schools offering EA
                     for (int i = 0; i < collegeList.length; i++) {
                         if (collegeList[i][4].equals("PUB") && !collegeList[i][3].equals("N")) {
                             System.out.println((i) + ": " + collegeList[i][0]);
@@ -595,11 +612,76 @@ public class UniversitySimulator {
             collegesApplied.add(eaApp);  // Add to the list
         }
 
+        System.out.println("Proceeding to the Regular Decision phase. Press any key to continue and view a list of colleges available for application.");
+        input.nextLine();
+        System.out.println();
+        System.out.println("List of Colleges:");
+                for (int i = 0; i < collegeList.length; i++) {
+                    if (isCollegeInList(collegesApplied, collegeList[i][0])) {
+                        System.out.println(i + " : " + collegeList[i][0] + " - ALREADY APPLIED");
+                    }
+                    else {
+                        System.out.println(i + " : " + collegeList[i][0]);
+                    }
+                }
+                System.out.println();
+
         // rd apps
-        
+        boolean done = false;
+        while (!done) {
+            System.out.println("What school would you like to apply to? Type 'help' to find out colleges you can apply to, and type 'done' when you are done.");
+            String userInput = input.next();
+            System.out.println();
+
+            if (userInput.equalsIgnoreCase("help")) {
+                System.out.println();
+                System.out.println("List of Colleges:");
+                for (int i = 0; i < collegeList.length; i++) {
+                    if (isCollegeInList(collegesApplied, collegeList[i][0])) {
+                        System.out.println(i + " : " + collegeList[i][0] + " - ALREADY APPLIED");
+                    }
+                    else {
+                        System.out.println(i + " : " + collegeList[i][0]);
+                    }
+                }
+                System.out.println();
+                continue;
+            }
+
+            if (userInput.equalsIgnoreCase("done")) {
+                done = true;
+                break;
+            }
+
+            try {
+                int collegeId = Integer.parseInt(userInput);
+                if (-1 < collegeId && collegeId < collegeList.length && !isCollegeInList(collegesApplied, collegeList[collegeId][0])) {
+                    String[] app = {collegeList[collegeId][0], "ED"};
+                    collegesApplied.add(app);
+                    System.out.println("You have applied to: " + collegeList[collegeId][0] + "!");
+                    System.out.println();
+                } else {
+                    System.out.println("Invalid college ID or you have already applied to this college. Please choose a different college.");
+                    System.out.println();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid college ID, type 'help' for assistance, or type 'done' to finish.");
+                System.out.println();
+            }
+
+        }
+        System.out.println("Colleges you have applied to: ");
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            System.out.println(application[0] + " - (" + application[1] + ")");
+        }
+        System.out.println();
+
+        System.out.println("Press any key to reveal your admission chances and interview strengths for each school.");
+        input.nextLine();
+
         input.close();
 }
-
 
     public static double weightedGPA(double gpa, int ap_courses) {
         double wgpa = gpa;
@@ -722,4 +804,12 @@ public class UniversitySimulator {
         return "N/A";
     }
     
+    public static boolean isCollegeInList(ArrayList<String[]> collegesApplied, String collegeName) {
+        for (String[] application : collegesApplied) {
+            if (application[0].equals(collegeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
