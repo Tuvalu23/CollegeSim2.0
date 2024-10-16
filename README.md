@@ -24,9 +24,16 @@ Completed:
 - [X] Demographic score and weighted GPA calculations.
 - [X] Display of college application profile.
 In Progress
-- [ ] Regular Decision (RD) application logic.
+- [X] Regular Decision (RD) application logic.
 - [ ] Incorporating acceptance probability calculations based on the user profile.
-- [ ] Improving the UI and user interaction flow.
+- [ ] Simulate interviews and display them
+- [ ] ED Acceptance Logic
+- [ ] REA Acceptance Logic
+- [ ] EA Acceptance Logic
+- [ ] RD Acceptance Logic
+- [ ] CA Points + Average Points Per School
+- [ ] Select a school to commit to!
+- [ ] ANSI formatting
 
 ## License
 This project is licensed under the MIT License.
