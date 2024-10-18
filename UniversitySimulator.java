@@ -104,6 +104,9 @@ public class UniversitySimulator {
     public static final String BRIGHT_PURPLE = "\u001B[95m";
     public static final String BRIGHT_CYAN = "\u001B[96m";
     public static final String BRIGHT_WHITE = "\u001B[97m";
+    public static final String BRIGHT_LIME = "\u001B[92m";  // Lime is closest to bright green  
+    public static final String BRIGHT_ORANGE = "\u001B[38;5;214m"; // ANSI code for orange-like color
+    public static final String BRIGHT_DARK_RED = "\u001B[38;5;88m"; // Dark red
 
     public static final String RESET = "\u001B[0m";
 
@@ -478,7 +481,7 @@ public class UniversitySimulator {
             }
 
             // EA Selection for Public Schools
-            if (response3.equals("no") || (reaSchool != -1)) {
+            if ((reaSchool != -1)) {
                 System.out.println("Would you like to apply for Early Action (EA) to any public schools? (yes/no)");
                 String response4 = input.nextLine().trim().toLowerCase();
                 System.out.println();
@@ -571,7 +574,7 @@ public class UniversitySimulator {
                         }
 
                         // Validate selection and confirm
-                        if ((eadSelection > -1 && eadSelection < collegeList.length && !collegeList[eadSelection][3].equals("N")) ) {
+                        if ((eadSelection > -1 && eadSelection < collegeList.length && !collegeList[eadSelection][3].equals("N") && !collegeList[eadSelection][3].equals("REA")) ) {
                             if (!eaSchools.contains(eadSelection) && (edSchool != eadSelection)) {
                                 eaSchools.add(eadSelection);  // Add selected school to the list
                                 System.out.println("Applied to " + collegeList[eadSelection][0] + " (EA).");
@@ -601,14 +604,15 @@ public class UniversitySimulator {
 
         ArrayList<String[]> collegesApplied = new ArrayList<>();
         if (edSchool != -1) {
-            String[] edApp = {collegeList[edSchool][0], "ED"};
+            String[] edApp = {collegeList[edSchool][0], "ED", "0"};
             collegesApplied.add(edApp);
         }
         else if (reaSchool != -1) {
-            String[] reaApp = {collegeList[reaSchool][0], "REA"};
+            String[] reaApp = {collegeList[reaSchool][0], "REA", "0"};
+            collegesApplied.add(reaApp);
         }
         for (int eaSchool : eaSchools) {
-            String[] eaApp = {collegeList[eaSchool][0], "EA"};  // Create an entry with college name and type "EA"
+            String[] eaApp = {collegeList[eaSchool][0], "EA", "0"};  // Create an entry with college name and type "EA"
             collegesApplied.add(eaApp);  // Add to the list
         }
 
@@ -656,7 +660,7 @@ public class UniversitySimulator {
             try {
                 int collegeId = Integer.parseInt(userInput);
                 if (-1 < collegeId && collegeId < collegeList.length && !isCollegeInList(collegesApplied, collegeList[collegeId][0])) {
-                    String[] app = {collegeList[collegeId][0], "ED"};
+                    String[] app = {collegeList[collegeId][0], "RD", "0"};
                     collegesApplied.add(app);
                     System.out.println("You have applied to: " + collegeList[collegeId][0] + "!");
                     System.out.println();
@@ -673,12 +677,23 @@ public class UniversitySimulator {
         System.out.println("Colleges you have applied to: ");
         for (int i = 0; i < collegesApplied.size(); i++) {
             String[] application = collegesApplied.get(i);
+            application[2] = sim10();
             System.out.println(application[0] + " - (" + application[1] + ")");
         }
         System.out.println();
 
         System.out.println("Press any key to reveal your admission chances and interview strengths for each school.");
         input.nextLine();
+        input.nextLine();
+        
+        //random interviews
+        System.out.println();
+        System.out.println("Your interview strength for each college:");
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            System.out.println(application[0] + " - (" + application[1] + "): " + application[2] + "/10.0 -- " + rate(Double.parseDouble(application[2])));
+        }
+        System.out.println();
 
         input.close();
 }
@@ -789,20 +804,21 @@ public class UniversitySimulator {
     
     public static String rate(double value) {
         if (value <= 10 && value >= 8.7) {
-            return "Outstanding";
+            return "\u001B[38;5;22m" + "Outstanding" + BRIGHT_WHITE;
         } else if (value >= 7.2) {
-            return "Strong";
+            return BRIGHT_GREEN + "Strong" + BRIGHT_WHITE;
         } else if (value >= 6) {
-            return "Moderate";
+            return BRIGHT_YELLOW + "Moderate" + BRIGHT_WHITE;
         } else if (value >= 4.5) {
-            return "Fair";
+            return BRIGHT_ORANGE + "Fair" + BRIGHT_WHITE;
         } else if (value >= 2) {
-            return "Weak";
+            return BRIGHT_RED + "Weak" + BRIGHT_WHITE;
         } else if (value >= 0) {
-            return "Terrible";
+            return BRIGHT_DARK_RED + "Terrible" + BRIGHT_WHITE;
         }
-        return "N/A";
+        return BRIGHT_BLACK + "N/A" + BRIGHT_WHITE;
     }
+    
     
     public static boolean isCollegeInList(ArrayList<String[]> collegesApplied, String collegeName) {
         for (String[] application : collegesApplied) {
@@ -812,4 +828,35 @@ public class UniversitySimulator {
         }
         return false;
     }
+
+    public static String sim10() {
+        double var = Math.random() * 10;
+        double var2;
+
+        if (var < 1) {
+            var2 = Math.random() * 2;
+        } else if (var < 3) {
+            var2 = Math.random() * 5.5;
+        } else if (var < 5) {
+            var2 = Math.random() * 9;
+        } else if (var < 7) {
+            var2 = 2 + Math.random() * 8;
+        } else if (var < 9) {
+            var2 = 3 + Math.random() * 8;
+        } else {
+            var2 = 9 + Math.random() * 1.2;
+        }
+
+        // Ensure the value doesn't exceed 10
+        if (var2 > 10) {
+            var2 = 10.0;
+        }
+        if (var2 < 5) {
+            var2 = var2 - 1 + Math.random() * 2.5;
+        }
+
+        // Round to 2 decimal places and return as a string
+        return String.format("%.2f", var2);
+    }
+    
 }
