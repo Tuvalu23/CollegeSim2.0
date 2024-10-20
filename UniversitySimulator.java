@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -1042,9 +1041,16 @@ public class UniversitySimulator {
         }
         finalChance += Math.random() * 6 - 3;
         // Ensure final chance is between 0 and 100
+        if (finalChance <= 0.0) {
+            finalChance = 0.0;
+            finalChance += Math.random() * 1.5;
+        }
+        if (finalChance >= 100.0) {
+            finalChance = 100.0;
+            finalChance -= Math.random() * 3;
+        }
         finalChance = Math.max(0, Math.min(100, finalChance));
         finalChance = Math.max(0, Math.min(100, finalChance));
-        System.out.println(student_num);
         return Math.round(finalChance * 100.0) / 100.0; 
     }
 
