@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -114,8 +115,8 @@ public class UniversitySimulator {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         double gpa = -1.0;
-        int sat = -1;
-        int act = -1;
+        double sat = -1;
+        double act = -1;
         boolean testOptional = false;
         String name = null;
         double extracurriculars = -1;
@@ -695,8 +696,18 @@ public class UniversitySimulator {
         }
         System.out.println();
 
+        System.out.println("Your chances and classifications for each college:");
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            double chances = chanceCollege(collegeList[findInList(collegeList, application[0])][1], demScore, testOptional, sat, act, extracurriculars, ap_courses, essay_strength, gpa, Double.parseDouble(application[2]));
+            System.out.println(application[0] + " - (" + application[1] + "): " + chances + "% -- " + classify(chances));
+        }
+
+
         input.close();
 }
+
+
 
     public static double weightedGPA(double gpa, int ap_courses) {
         double wgpa = gpa;
@@ -859,4 +870,213 @@ public class UniversitySimulator {
         return String.format("%.2f", var2);
     }
     
+    public static int findInList(String[][] collegeList, String college) {
+        for (int i = 0; i < collegeList.length; i++) {
+            if (collegeList[i][0].equals(college)) {
+                return i;  // Return the index of the found college
+            }
+        }
+        return -1;
+    }
+
+    public static double chanceCollege(String acceptanceRate, double demScore, boolean testOptional, double sat, double act, 
+                                       double extracurriculars, int ap_courses, double essayStrength, double gpa, 
+                                       double interviewStrength) {
+        // Convert acceptance rate and interview strength to double
+        double baseChance = Double.parseDouble(acceptanceRate) * 100; // Convert acceptance rate to percentage
+        double interviewScore = (interviewStrength); // Parse interview strength as double
+        Random rand = new Random();
+        
+        double student_num = 0.0;
+        if (testOptional) {
+            // gpa = 40 pts, ec = 20 pts, essay = 15 pts, ap = 10pts, interview = 15pts
+            if (gpa > 99) {
+                student_num += 40;
+            } else if (gpa > 98) {
+                student_num += 39;
+            } else if (gpa > 97) {
+                student_num += 38; 
+            } else if (gpa > 96) {
+                student_num += 36; 
+            } else if (gpa > 95) {
+                student_num += 34; 
+            } else if (gpa > 94) {
+                student_num += 32; 
+            } else if (gpa > 93) {
+                student_num += 29; 
+            } else if (gpa > 92) {
+                student_num += 26.5; 
+            } else if (gpa > 91) {
+                student_num += 25; 
+            } else if (gpa > 90) {
+                student_num += 22; 
+            } else if (gpa > 88) {
+                student_num += 21; 
+            } else if (gpa > 85) {
+                student_num += 16; 
+            } else if (gpa > 82.5) {
+                student_num += 13; 
+            } else if (gpa > 80) {
+                student_num += 11; 
+            } else if (gpa > 75) {
+                student_num += 8; 
+            } else if (gpa > 70) {
+                student_num += 5; 
+            }
+            else {
+                student_num += 2;
+            }
+            student_num += extracurriculars * 2;
+            student_num += ap_courses * 0.9;
+            student_num += interviewScore * 1.5;
+            student_num += essayStrength * 1.5;
+            student_num -= 4;
+
+        } else {
+        // gpa = 35 pts, ec = 15 pts, essay = 15 pts, ap = 12.5pts, interview = 12.5pts, sat/act 15 pts
+        if (gpa > 99) {
+            student_num += 35;
+        } else if (gpa > 98) {
+            student_num += 34;
+        } else if (gpa > 97) {
+            student_num += 33;
+        } else if (gpa > 96) {
+            student_num += 32;
+        } else if (gpa > 95) {
+            student_num += 30;
+        } else if (gpa > 94) {
+            student_num += 28;
+        } else if (gpa > 93) {
+            student_num += 26;
+        } else if (gpa > 92) {
+            student_num += 24;
+        } else if (gpa > 91) {
+            student_num += 22;
+        } else if (gpa > 90) {
+            student_num += 20;
+        } else if (gpa > 88) {
+            student_num += 18;
+        } else if (gpa > 85) {
+            student_num += 15;
+        } else if (gpa > 82.5) {
+            student_num += 12;
+        } else if (gpa > 80) {
+            student_num += 10;
+        } else if (gpa > 75) {
+            student_num += 7;
+        } else if (gpa > 70) {
+            student_num += 5;
+        } else {
+            student_num += 3;
+        }
+    
+        student_num += extracurriculars * 1.5;    // 15 pts max
+        student_num += ap_courses * 1.25;         // 12.5 pts max
+        student_num += interviewScore * 1.25;     // 12.5 pts max
+        student_num += essayStrength * 1.5;       // 15 pts max
+    
+        // SAT/ACT contribution (15 pts max)
+        if (sat != -1) {
+            if (sat == 1600) {
+                student_num += 15;
+            } else if (sat >= 1570) {
+                student_num += 14;
+            } else if (sat >= 1540) {
+                student_num += 13;
+            } else if (sat >= 1510) {
+                student_num += 11.5;
+            } else if (sat >= 1490) {
+                student_num += 10.5;
+            } else if (sat >= 1450) {
+                student_num += 9;
+            } else if (sat >= 1400) {
+                student_num += 6;
+            } else if (sat >= 1300) {
+                student_num += 3;
+            } else {
+                student_num += 1;
+            }
+        } else if (act != -1) {
+            if (act == 36) {
+                student_num += 15;
+            } else if (act >= 35) {
+                student_num += 14;
+            } else if (act >= 34) {
+                student_num += 13;
+            } else if (act >= 33) {
+                student_num += 12;
+            } else if (act >= 32) {
+                student_num += 11;
+            } else if (act >= 31) {
+                student_num += 10;
+            } else if (act >= 30) {
+                student_num += 9;
+            } else if (act >= 29) {
+                student_num += 7;
+            } else if (act >= 27) {
+                student_num += 5;
+            } else if (act >= 25) {
+                student_num += 3;
+            } else if (act >= 23) {
+                student_num += 2;
+            } else {
+                student_num += 1;
+            }
+        }
+        }
+
+        if (demScore > 5) {
+            student_num += (demScore - 5);
+        } else {
+            student_num -= (5 - demScore);
+        }
+        
+        double diff = student_num - (100 - baseChance);
+        double finalChance;
+        if (diff >= 0) {
+            // Positive difference, but apply a diminishing return for higher student_num to avoid extreme chances
+            finalChance = 50 + (20 * Math.log10(1 + diff));  // Scaling the positive diff with log to dampen upper extremes
+        } else {
+            // Negative difference, sharper drop-off for reach schools
+            finalChance = 50 - (40 * Math.log10(1 - diff));  // Scaling the negative diff more aggressively
+        }
+        finalChance += Math.random() * 6 - 3;
+        // Ensure final chance is between 0 and 100
+        finalChance = Math.max(0, Math.min(100, finalChance));
+        finalChance = Math.max(0, Math.min(100, finalChance));
+        System.out.println(student_num);
+        return Math.round(finalChance * 100.0) / 100.0; 
+    }
+
+    // Method to classify the chances based on percentag
+    public static String classify(double chances) {
+        String classification;
+        String colorCode;
+
+        if (chances < 5) {
+            classification = "Huge Reach";
+            colorCode = "\u001B[31m";  // Red
+        } else if (chances < 13) {
+            classification = "Big Reach";
+            colorCode = "\u001B[31m";  // Red
+        } else if (chances < 25) {
+            classification = "Reach";
+            colorCode = "\u001B[33m";  // Yellow
+        } else if (chances < 40) {
+            classification = "Hard Target";
+            colorCode = "\u001B[33m";  // Yellow
+        } else if (chances < 60) {
+            classification = "Target";
+            colorCode = "\u001B[32m";  // Green
+        } else if (chances < 75) {
+            classification = "Likely";
+            colorCode = "\u001B[32m";  // Green
+        } else {
+            classification = "Safety";
+            colorCode = "\u001B[34m";  // Blue
+        }
+
+        return colorCode + classification + "\u001B[0m";  // Reset the color
+
+    }
 }
