@@ -574,7 +574,7 @@ public class UniversitySimulator {
                         }
 
                         // Validate selection and confirm
-                        if ((eadSelection > -1 && eadSelection < collegeList.length && !collegeList[eadSelection][3].equals("N") && !collegeList[eadSelection][3].equals("REA")) ) {
+                        if ((eadSelection > -1 && eadSelection < collegeList.length && !collegeList[eadSelection][3].equals("N") && !collegeList[eadSelection][4].equals("REA")) ) {
                             if (!eaSchools.contains(eadSelection) && (edSchool != eadSelection)) {
                                 eaSchools.add(eadSelection);  // Add selected school to the list
                                 System.out.println("Applied to " + collegeList[eadSelection][0] + " (EA).");
@@ -698,7 +698,7 @@ public class UniversitySimulator {
         System.out.println("Your chances and classifications for each college:");
         for (int i = 0; i < collegesApplied.size(); i++) {
             String[] application = collegesApplied.get(i);
-            double chances = chanceCollege(collegeList[findInList(collegeList, application[0])][1], demScore, testOptional, sat, act, extracurriculars, ap_courses, essay_strength, gpa, Double.parseDouble(application[2]));
+            double chances = chanceCollege(collegeList, findInList(collegeList, application[0]), demScore, testOptional, sat, act, extracurriculars, ap_courses, essay_strength, gpa, Double.parseDouble(application[2]), application[1]);
             System.out.println(application[0] + " - (" + application[1] + "): " + chances + "% -- " + classify(chances));
         }
 
@@ -862,6 +862,9 @@ public class UniversitySimulator {
             var2 = 10.0;
         }
         if (var2 < 5) {
+            if (var2 <= 1) {
+                var2 += Math.random() * 1.5;
+            }
             var2 = var2 - 1 + Math.random() * 2.5;
         }
 
@@ -878,11 +881,11 @@ public class UniversitySimulator {
         return -1;
     }
 
-    public static double chanceCollege(String acceptanceRate, double demScore, boolean testOptional, double sat, double act, 
+    public static double chanceCollege(String[][] collegeList, int i, double demScore, boolean testOptional, double sat, double act, 
                                        double extracurriculars, int ap_courses, double essayStrength, double gpa, 
-                                       double interviewStrength) {
+                                       double interviewStrength, String app_type) {
         // Convert acceptance rate and interview strength to double
-        double baseChance = Double.parseDouble(acceptanceRate) * 100; // Convert acceptance rate to percentage
+        double baseChance = Double.parseDouble(collegeList[i][1]); // Convert acceptance rate to percentage
         double interviewScore = (interviewStrength); // Parse interview strength as double
         Random rand = new Random();
         
@@ -1040,6 +1043,18 @@ public class UniversitySimulator {
             finalChance = 50 - (40 * Math.log10(1 - diff));  // Scaling the negative diff more aggressively
         }
         finalChance += Math.random() * 6 - 3;
+
+        double multiplier = 1;
+        if (app_type.equals("ED")) {
+            multiplier = Double.parseDouble(collegeList[i][2]);
+        }
+        if (app_type.equals("EA")) {
+            multiplier = Double.parseDouble(collegeList[i][3]);
+        }
+        if (app_type.equals("REA")) {
+            multiplier = Double.parseDouble(collegeList[i][3]);
+        }
+        finalChance *= ((multiplier - 1) / 2) + 1;
         // Ensure final chance is between 0 and 100
         if (finalChance <= 0.0) {
             finalChance = 0.0;
@@ -1049,8 +1064,8 @@ public class UniversitySimulator {
             finalChance = 100.0;
             finalChance -= Math.random() * 3;
         }
-        finalChance = Math.max(0, Math.min(100, finalChance));
-        finalChance = Math.max(0, Math.min(100, finalChance));
+        System.out.println(student_num);
+        System.out.println(multiplier);
         return Math.round(finalChance * 100.0) / 100.0; 
     }
 
