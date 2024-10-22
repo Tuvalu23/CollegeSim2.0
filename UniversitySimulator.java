@@ -25,12 +25,13 @@ public class UniversitySimulator {
         {"Cornell University", "0.18", "2.2", "N", "P"},
         {"University of Notre Dame", "0.18", "N", "1.2", "REA"},
         {"University of Michigan", "0.18", "N", "1.3", "PUB"},
-        {"University of California, Berkeley", "0.22", "N", "N", "PUB"},
+        {"University of California, Berkeley", "0.15", "N", "N", "PUB"},
         {"University of California, Los Angeles (UCLA)", "0.20", "N", "N", "PUB"},
         {"Emory University", "0.14", "1.7", "N", "P"},
-        {"Georgetown University", "0.17", "N", "1.3", "REA"},
+        {"Georgetown University", "0.25", "N", "1.3", "REA"},
         {"University of Southern California (USC)", "0.17", "N", "1.3", "P"},
-        {"Tufts University", "0.16", "2.0", "N", "P"},
+        {"University of Virginia (UVA)", "0.15", "N", "1.3", "PUB"},
+        {"Tufts University", "0.12", "2.0", "N", "P"},
         {"New York University (NYU)", "0.22", "1.5", "1.3", "P"},
         {"Wake Forest University", "0.20", "2.1", "N", "P"},
         {"University of Rochester", "0.35", "1.7", "N", "P"},
@@ -48,7 +49,6 @@ public class UniversitySimulator {
         {"University of Maryland", "0.45", "N", "1.2", "PUB"},
         {"Purdue University", "0.55", "N", "N", "PUB"},
         {"University of Washington", "0.45", "N", "N", "PUB"},
-        {"Florida State University", "0.60", "N", "1.1", "PUB"},
         {"University of Pittsburgh", "0.55", "N", "1.1", "PUB"},
         {"Syracuse University", "0.60", "N", "N", "P"},
         {"Texas A&M University", "0.55", "N", "1.1", "PUB"},
@@ -394,7 +394,7 @@ public class UniversitySimulator {
         System.out.println("W GPA: " + wgpa);
         if (testOptional == false) {
             if (sat != -1) {
-                System.out.println("SAT: " + sat);
+                System.out.println("SAT: " + (int)(sat));
             }
             if (act != -1) {
                 System.out.println("ACT: " + act);
@@ -699,7 +699,7 @@ public class UniversitySimulator {
         for (int i = 0; i < collegesApplied.size(); i++) {
             String[] application = collegesApplied.get(i);
             double chances = chanceCollege(collegeList, findInList(collegeList, application[0]), demScore, testOptional, sat, act, extracurriculars, ap_courses, essay_strength, gpa, Double.parseDouble(application[2]), application[1]);
-            System.out.println(application[0] + " - (" + application[1] + "): " + chances + "% -- " + classify(chances));
+            System.out.println(application[0] + " - (" + application[1] + "): " + chances + "% -- " + getType(chances));
         }
 
 
@@ -780,7 +780,7 @@ public class UniversitySimulator {
                 score += Math.random() * 4.5;  // Boost for underrepresented minority
                 break;
             case 4:  // Asian
-                score -= Math.random() * 3;  // Small boost
+                score -= Math.random() * 3.5;  // Small boost
                 break;
             case 5:  // Native American or Alaskan Native
                 score += Math.random() * 4;  // Significant boost for underrepresented minority
@@ -887,7 +887,6 @@ public class UniversitySimulator {
         // Convert acceptance rate and interview strength to double
         double baseChance = Double.parseDouble(collegeList[i][1]); // Convert acceptance rate to percentage
         double interviewScore = (interviewStrength); // Parse interview strength as double
-        Random rand = new Random();
         
         double student_num = 0.0;
         if (testOptional) {
@@ -1032,17 +1031,329 @@ public class UniversitySimulator {
         } else {
             student_num -= (5 - demScore);
         }
-        
-        double diff = student_num - (100 - baseChance);
-        double finalChance;
-        if (diff >= 0) {
-            // Positive difference, but apply a diminishing return for higher student_num to avoid extreme chances
-            finalChance = 50 + (20 * Math.log10(1 + diff));  // Scaling the positive diff with log to dampen upper extremes
-        } else {
-            // Negative difference, sharper drop-off for reach schools
-            finalChance = 50 - (40 * Math.log10(1 - diff));  // Scaling the negative diff more aggressively
+
+        int tier = classify(student_num);
+        double chances = 0;
+        if (baseChance < 0.05) { // tier 1
+            if (tier == 1) {
+                chances = (36 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (27 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (21 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (13 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (4 + (Math.random() * 6 - 3));
+            }
+            else if (tier == 6) {
+                chances =  (2 + (Math.random() * 6 - 3));
+            }
+            else if (tier == 7) {
+                chances =  (1 + (Math.random() * 2 - 1));
+            }
+            else if (tier == 8) {
+                chances =  (0.5 + (Math.random() * 0.4 - 0.2));
+            }
+            else if (tier == 9) {
+                chances =  (0.2 + (Math.random() * 0.2 - 0.1));
+            }
+            else if (tier == 10) {
+                chances =  (0.1);
+            }
+            else {
+                chances =  0.05;
+            }
         }
-        finalChance += Math.random() * 6 - 3;
+        else if (baseChance < 0.1) { // tier 1
+            if (tier == 1) {
+                chances = (46 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (34 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (27 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (19 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (12 + (Math.random() * 6 - 3));
+            }
+            else if (tier == 6) {
+                chances =  (6 + (Math.random() * 6 - 3));
+            }
+            else if (tier == 7) {
+                chances =  (2 + (Math.random() * 2 - 1));
+            }
+            else if (tier == 8) {
+                chances =  (0.5 + (Math.random() * 0.4 - 0.2));
+            }
+            else if (tier == 9) {
+                chances =  (0.2 + (Math.random() * 0.2 - 0.1));
+            }
+            else if (tier == 10) {
+                chances =  (0.1);
+            }
+            else {
+                chances =  0.05;
+            }
+        }
+        else if (baseChance < 0.16) { // tier 2
+            if (tier == 1) {
+                chances =  (57 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (44 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (36 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (27 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (21 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (13 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (7 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (3 + (Math.random() * 0.4 - 0.2 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (2 + (Math.random() * 0.2 - 0.1));
+            }
+            else if (tier == 10) {
+                chances =  (1 + (Math.random() * 0.2 - 0.1));
+            }
+            else {
+                chances =  0.5 + (Math.random() * 0.1 - 0.05);
+            }
+        }
+    
+        else if (baseChance < 0.25) { // tier 3
+            if (tier == 1) {
+                chances =  (67 + (Math.random() * 10 - 5 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (55 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (41 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (34 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (25 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (18 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (11 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (6 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (3 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (2 + (Math.random() * 0.2 - 0.1));
+            }
+            else {
+                chances =  0.7 + (Math.random() * 0.2 - 0.1);
+            }
+        }
+    
+        else if (baseChance < 0.35) { // tier 4
+            if (tier == 1) {
+                chances =  (74 + (Math.random() * 10 - 5 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (67 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (58 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (48 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (39 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (35 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (24 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (21 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (14+ (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (7 + (Math.random() * 0.2 - 0.1 - 2));
+            }
+            else {
+                return 3 + (Math.random() * 0.2 - 0.1 - 2);
+            }
+        }
+
+        else if (baseChance < 0.45) { // tier 5
+            if (tier == 1) {
+                chances =  (79 + (Math.random() * 10 - 5 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (71 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (65 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (56 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (49 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (41 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (33 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (25 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (18 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (12 + (Math.random() * 2 - 1 - 2));
+            }
+            else {
+                chances =  4 + (Math.random() * 0.2 - 0.1 - 2);
+            }
+        }
+    
+        else if (baseChance < 0.6) { // tier 6
+            if (tier == 1) {
+                chances =  (85 + (Math.random() * 12 - 6 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (78 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (71 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (65 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (55 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 6) {
+                chances = (46 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (36 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (25 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (16 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (7 + (Math.random() * 2 - 1 - 2));
+            }
+            else {
+                chances =  3 + (Math.random() * 2 - 1 - 2);
+            }
+        }
+    
+        else if (baseChance < 0.8) { // tier 7
+            if (tier == 1) {
+                chances =  (90 + (Math.random() * 12 - 6 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (87 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (80 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (74 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (65 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (56 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (45 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (37 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (26 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (16 + (Math.random() * 2 - 1 - 2));
+            }
+            else {
+                chances =  13 + (Math.random() * 2 - 1 - 2);
+            }
+        }
+        else {
+            if (tier == 1) {
+                chances =  (93 + (Math.random() * 12 - 6 - 2));
+            }
+            else if (tier == 2) {
+                chances =  (87 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 3) {
+                chances =  (80 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 4) {
+                chances =  (74 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 5) {
+                chances =  (65 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 6) {
+                chances =  (56 + (Math.random() * 8 - 4 - 2));
+            }
+            else if (tier == 7) {
+                chances =  (45 + (Math.random() * 6 - 3 - 2));
+            }
+            else if (tier == 8) {
+                chances =  (37 + (Math.random() * 4 - 2 - 2));
+            }
+            else if (tier == 9) {
+                chances =  (28 + (Math.random() * 2 - 1 - 2));
+            }
+            else if (tier == 10) {
+                chances =  (24 + (Math.random() * 2 - 1 - 2));
+            }
+            else {
+                chances =  18 + (Math.random() * 2 - 1 - 2);
+            }
+        }
 
         double multiplier = 1;
         if (app_type.equals("ED")) {
@@ -1054,50 +1365,99 @@ public class UniversitySimulator {
         if (app_type.equals("REA")) {
             multiplier = Double.parseDouble(collegeList[i][3]);
         }
-        finalChance *= ((multiplier - 1) / 2) + 1;
+        chances *= ((multiplier - 1) / 2) + 1;
+        chances += Math.random() * 4 - 2; 
         // Ensure final chance is between 0 and 100
-        if (finalChance <= 0.0) {
-            finalChance = 0.0;
-            finalChance += Math.random() * 1.5;
+        if (interviewScore < 2) {
+            chances -= Math.random() * 7;
         }
-        if (finalChance >= 100.0) {
-            finalChance = 100.0;
-            finalChance -= Math.random() * 3;
+        if (interviewScore > 8) {
+            chances += Math.random() * 7;
         }
-        System.out.println(student_num);
-        System.out.println(multiplier);
-        return Math.round(finalChance * 100.0) / 100.0; 
+        if (chances <= 0.0) {
+            chances = 0.0;
+            chances += Math.random() * 1.5;
+        }
+        if (chances >= 100.0) {
+            chances = 100.0;
+            chances -= Math.random() * 3;
+        }
+        if (chances >= 97) {
+            chances -= Math.random() * 6;
+        }
+        return Math.round(chances * 100.0) / 100.0; 
     }
 
     // Method to classify the chances based on percentag
-    public static String classify(double chances) {
-        String classification;
-        String colorCode;
-
-        if (chances < 5) {
-            classification = "Huge Reach";
-            colorCode = "\u001B[31m";  // Red
-        } else if (chances < 13) {
-            classification = "Big Reach";
-            colorCode = "\u001B[31m";  // Red
-        } else if (chances < 25) {
-            classification = "Reach";
-            colorCode = "\u001B[33m";  // Yellow
-        } else if (chances < 40) {
-            classification = "Hard Target";
-            colorCode = "\u001B[33m";  // Yellow
-        } else if (chances < 60) {
-            classification = "Target";
-            colorCode = "\u001B[32m";  // Green
-        } else if (chances < 75) {
-            classification = "Likely";
-            colorCode = "\u001B[32m";  // Green
-        } else {
-            classification = "Safety";
-            colorCode = "\u001B[34m";  // Blue
+    public static String getType(double chance) {
+        final String RESET = "\033[0m";
+        final String GREEN = "\033[0;32m";
+        final String LIME_GREEN = "\033[1;32m";
+        final String ORANGE = "\033[0;33m";  // ANSI does not have true orange; using yellow
+        final String RED = "\033[0;31m";
+        final String DARK_RED = "\033[1;31m";
+        final String PURPLE = "\033[0;35m";
+    
+        if (chance > 80) {
+            return GREEN + "Highly Likely" + RESET;
         }
+        else if (chance > 65) {
+            return LIME_GREEN + "Safety" + RESET;
+        }
+        else if (chance > 45) {
+            return ORANGE + "Target" + RESET;
+        }
+        else if (chance > 30) {
+            return ORANGE + "Hard Target" + RESET;
+        }
+        else if (chance > 21) {
+            return ORANGE + "Competitive" + RESET;
+        }
+        else if (chance > 12) {
+            return RED + "Reach" + RESET;
+        }
+        else if (chance > 5) {
+            return DARK_RED + "Big Reach" + RESET;
+        }
+        else {
+            return PURPLE + "Huge Reach" + RESET;
+        }
+    }
+    
 
-        return colorCode + classification + "\u001B[0m";  // Reset the color
-
+    public static int classify(double num) {
+        if (num >= 96) {
+            return 1;
+        }
+        else if (num >= 92) {
+            return 2;
+        }
+        else if (num >= 87) {
+            return 3;
+        }
+        else if (num >= 83) {
+            return 4;
+        }
+        else if (num >= 76) {
+            return 5;
+        }
+        else if (num >= 70) {
+            return 6;
+        }
+        else if (num >= 63) {
+            return 7;
+        }
+        else if (num >= 51) {
+            return 8;
+        }
+        else if (num >= 39) {
+            return 9;
+        }
+        else if (num >= 30) {
+            return 10;
+        }
+        else {
+            return 11;
+        }
     }
 }
