@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class UniversitySimulator {
         {"University of Pennsylvania", "0.03", "2.3", "N", "P"},
         {"California Institute of Technology (Caltech)", "0.03", "N", "1.1", "REA"},
         {"Princeton University", "0.06", "N", "1.3", "REA"},
-        {"Massachusetts Institute of Technology (MIT)", "0.07", "N", "1.2", "P"},
+        {"Massachusetts Institute of Technology (MIT)", "0.06", "N", "1.2", "P"},
         {"Yale University", "0.07", "N", "1.3", "REA"},
         {"Harvard University", "0.08", "N", "1.3", "REA"},
         {"University of Chicago", "0.08", "2.5", "1.3", "P"},
@@ -27,20 +28,23 @@ public class UniversitySimulator {
         {"University of Michigan", "0.18", "N", "1.3", "PUB"},
         {"University of California, Berkeley", "0.15", "N", "N", "PUB"},
         {"University of California, Los Angeles (UCLA)", "0.20", "N", "N", "PUB"},
+        {"CUNY Macaulay Honors College", "0.20", "N", "N", "PUB"},
         {"Emory University", "0.14", "1.7", "N", "P"},
         {"Georgetown University", "0.25", "N", "1.3", "REA"},
         {"University of Southern California (USC)", "0.17", "N", "1.3", "P"},
         {"University of Virginia (UVA)", "0.15", "N", "1.3", "PUB"},
+        {"University of North Carolina Chapel-Hill", "0.24", "N", "1.4", "PUB"},
         {"Tufts University", "0.12", "2.0", "N", "P"},
         {"New York University (NYU)", "0.22", "1.5", "1.3", "P"},
         {"Wake Forest University", "0.20", "2.1", "N", "P"},
         {"University of Rochester", "0.35", "1.7", "N", "P"},
         {"Boston College", "0.24", "1.8", "1.2", "P"},
         {"Georgia Institute of Technology", "0.16", "N", "1.4", "PUB"},
-        {"University of Texas at Austin", "0.30", "N", "N", "PUB"},
+        {"University of Texas at Austin", "0.30", "N", "1.2", "PUB"},
         {"University of Wisconsin-Madison", "0.30", "N", "1.1", "PUB"},
         {"University of California, San Diego (UCSD)", "0.40", "N", "N", "PUB"},
         {"University of California, Davis", "0.40", "N", "N", "PUB"},
+        {"Villanova University", "0.35", "2.5", "1.2", "P"},
         {"University of Illinois Urbana-Champaign", "0.32", "N", "1.2", "PUB"},
         {"University of California, Santa Barbara", "0.35", "N", "N", "PUB"},
         {"Pennsylvania State University", "0.45", "N", "1.1", "PUB"},
@@ -82,14 +86,15 @@ public class UniversitySimulator {
         {"Loyola Marymount University", "0.60", "N", "1.1", "P"},
         {"Drexel University", "0.55", "N", "1.1", "P"},
         {"University of California, Riverside", "0.50", "N", "N", "PUB"},
-        {"SUNY Binghamton", "0.70", "N", "1.3", "PUB"},
-        {"SUNY Stony Brook", "0.75", "N", "1.3", "PUB"},
+        {"Binghamton University (SUNY)", "0.70", "N", "1.3", "PUB"},
+        {"Stony Brook University (SUNY)", "0.75", "N", "1.3", "PUB"},
+        {"Florida State University", "0.7", "N", "1.1", "PUB"},
         {"Fordham University", "0.60", "N", "1.2", "P"},
         {"Hunter College (CUNY)", "0.70", "N", "N", "PUB"},
         {"University at Albany (SUNY)", "0.68", "N", "N", "PUB"},
         {"Hofstra University", "0.60", "N", "1.1", "P"},
-        {"Ithaca College", "0.55", "N", "1.2", "P"},
-        {"CUNY Macaulay Honors College", "0.30", "N", "N", "PUB"}        
+        {"Ithaca College", "0.55", "N", "1.2", "P"},  
+        {"University at Buffalo (SUNY)", "0.87", "N", "1.2", "PUB"}  
     };
 
     // ansi formatting
@@ -119,13 +124,14 @@ public class UniversitySimulator {
         boolean testOptional = false;
         String name = null;
         double extracurriculars = -1;
+
+
         int ap_courses = -1;
         double essay_strength = -1;
         int gender = -1;
         int race = -1;
         boolean firstGen = false;
 
-        System.out.println();
         System.out.println(BOLD + "Welcome to the College Application Simulator!" + RESET);
         System.out.println();
         System.out.println("[NOTE]: This is designed for NY applicants at Stuyvesant High School.");
@@ -397,7 +403,7 @@ public class UniversitySimulator {
                 System.out.println("SAT: " + (int)(sat));
             }
             if (act != -1) {
-                System.out.println("ACT: " + act);
+                System.out.println("ACT: " + (int)act);
             }
         }
         System.out.println("AP Courses Taken: " + ap_courses);
@@ -491,7 +497,7 @@ public class UniversitySimulator {
 
                     // public schools offering EA
                     for (int i = 0; i < collegeList.length; i++) {
-                        if (collegeList[i][4].equals("PUB") && !collegeList[i][3].equals("N")) {
+                        if (collegeList[i][4].equals("PUB") && !collegeList[i][3].equals("N") && (reaSchool != i)) {
                             System.out.println((i) + ": " + collegeList[i][0]);
                         }
                     }
@@ -557,7 +563,7 @@ public class UniversitySimulator {
                     System.out.println("You can apply EA to the following private non-REA and public schools. Please select schools by typing their corresponding numbers (multiple selections allowed).");
 
                     for (int i = 0; i < collegeList.length; i++) {
-                        if (!collegeList[i][3].equals("N") && !collegeList[i][4].equals("REA")) {
+                        if (!collegeList[i][3].equals("N") && !collegeList[i][4].equals("REA") && (edSchool != i)) {
                             System.out.println((i) + ": " + collegeList[i][0]);
                         }
                     }
@@ -604,15 +610,15 @@ public class UniversitySimulator {
 
         ArrayList<String[]> collegesApplied = new ArrayList<>();
         if (edSchool != -1) {
-            String[] edApp = {collegeList[edSchool][0], "ED", "0"};
+            String[] edApp = {collegeList[edSchool][0], "ED", "0", "null", "0", "false", "false"};
             collegesApplied.add(edApp);
         }
         else if (reaSchool != -1) {
-            String[] reaApp = {collegeList[reaSchool][0], "REA", "0"};
+            String[] reaApp = {collegeList[reaSchool][0], "REA", "0", "null", "0", "false", "false"};
             collegesApplied.add(reaApp);
         }
         for (int eaSchool : eaSchools) {
-            String[] eaApp = {collegeList[eaSchool][0], "EA", "0"};  // Create an entry with college name and type "EA"
+            String[] eaApp = {collegeList[eaSchool][0], "EA", "0", "null", "0", "false", "false"};  // Create an entry with college name and type "EA"
             collegesApplied.add(eaApp);  // Add to the list
         }
 
@@ -660,7 +666,7 @@ public class UniversitySimulator {
             try {
                 int collegeId = Integer.parseInt(userInput);
                 if (-1 < collegeId && collegeId < collegeList.length && !isCollegeInList(collegesApplied, collegeList[collegeId][0])) {
-                    String[] app = {collegeList[collegeId][0], "RD", "0"};
+                    String[] app = {collegeList[collegeId][0], "RD", "0", "null", "0", "false", "false"};
                     collegesApplied.add(app);
                     System.out.println("You have applied to: " + collegeList[collegeId][0] + "!");
                     System.out.println();
@@ -700,13 +706,205 @@ public class UniversitySimulator {
             String[] application = collegesApplied.get(i);
             double chances = chanceCollege(collegeList, findInList(collegeList, application[0]), demScore, testOptional, sat, act, extracurriculars, ap_courses, essay_strength, gpa, Double.parseDouble(application[2]), application[1]);
             System.out.println(application[0] + " - (" + application[1] + "): " + chances + "% -- " + getType(chances));
+            application[4] = String.valueOf(chances);
+        }
+        System.out.println();
+        System.out.println(BOLD + "Click any button to view your admissions decisions.");
+        input.nextLine();
+
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[1].equals("ED")) {
+                System.out.println("Your decision for " + application[0] + " (ED) is out! Press any key to view your admissions decision.");
+                input.nextLine();
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                double chances = Double.parseDouble(application[4]);
+                String result = admissionsDecision(chances, "ED", i, collegesApplied);
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println();
+                System.out.println(BOLD + "All Early Decision application letters have been read. Click any button to advance.");
+                input.nextLine();
+                if (application[3].equals("D")) {
+                    application[5] = "true";
+                }
+                application[3] = result;
+            }
         }
 
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[1].equals("REA")) {
+                System.out.println("Your decision for " + application[0] + " (REA) is out! Press any key to view your admissions decision.");
+                input.nextLine();
+                
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                double chances = Double.parseDouble(application[4]);
+                String result = admissionsDecision(chances, "REA", i, collegesApplied);
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println();
+                System.out.println(BOLD + "All Restrictive Early Action application letters have been read. Click any button to advance.");
+                input.nextLine();
+                
+                // Store result in application[3]
+                if (result.equals("D")) {
+                    application[5] = "true";
+                }
+                application[3] = result;
+            }
+        }
+
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[1].equals("EA")) {
+                System.out.println("Your decision for " + application[0] + " (EA) is out! Press any key to view your admissions decision.");
+                input.nextLine();
+                
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                double chances = Double.parseDouble(application[4]);
+                String result = admissionsDecision(chances, "EA", i, collegesApplied);
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println();
+                
+                // Store result in application[3]
+                if (result.equals("D")) {
+                    application[5] = "true";
+                }
+                application[3] = result;
+            }
+        }
+        System.out.println(BOLD + "All Early Action application letters have been read. Click any button to advance to Regular Decision.");
+                input.nextLine();
+
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[1].equals("RD") || application[3].equals("D")) {
+                System.out.println("Your decision for " + application[0] + " (RD) is out! Press any key to view your admissions decision.");
+                input.nextLine();
+                
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                double chances = Double.parseDouble(application[4]);
+                String result = admissionsDecision(chances, "RD", i, collegesApplied);
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println();
+                
+                // Store result in application[3]
+                if (result.equals("W")) {
+                    application[6] = "true";
+                }
+                application[3] = result;
+            }
+        }
+        System.out.println(BOLD + "All Regular Decision application letters have been read. Click any button to advance to Waitlist decisions.");
+                input.nextLine();
+
+        // waitlist
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[3].equals("W")) {
+                System.out.println("Your waitlist decision for " + application[0] + " is out! Press any key to view your admissions decision.");
+                input.nextLine();
+                
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                double chances = Double.parseDouble(application[4]);
+                String result = admissionsDecision(chances, "RD", i, collegesApplied);
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println();
+                
+                // Store result in application[3]
+                application[3] = result;
+            }
+        }
+        System.out.println(BOLD + "All waitlist decision letters have been read. Click any button to advance to school enrollment.");
+                input.nextLine();
+
+        // String[] app = {collegeList[collegeId][0], "RD", "0", null, "0", false, false};
+        // school enrollment
+        System.out.println("Final Results:");
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            System.out.print(application[0] + " - (" + application[1] + "): ");
+
+            // Deferred Status
+            if (application[5].equals("true")) {
+                System.out.print("- " + BRIGHT_YELLOW + "Deferred " + RESET);
+            }
+
+             // Waitlisted Status
+            if (application[6].equals("true")) {
+                System.out.print("- " + BRIGHT_YELLOW + "Waitlisted " + RESET);
+            }
+
+            // Acceptance Outcomes
+            if (application[3].equals("ASH")) {
+                System.out.print("- " + BRIGHT_GREEN + "Accepted with Honors & Scholarship" + RESET);
+            } else if (application[3].equals("AS")) {
+                System.out.print("- " + BRIGHT_GREEN + "Accepted with Scholarship" + RESET);
+            } else if (application[3].equals("A")) {
+                System.out.print("- " + BRIGHT_GREEN + "Accepted" + RESET);
+            } 
+
+            // Rejection Outcomes
+           if (application[3].equals("R")) {
+                System.out.print("- " + BRIGHT_RED + "Rejected" + RESET);
+            }
+            System.out.println();
+        }
+
+        List<String[]> acceptedSchools = new ArrayList<>();  // Store accepted applications
+
+        // Populate acceptedSchools list with accepted applications
+        for (int i = 0; i < collegesApplied.size(); i++) {
+            String[] application = collegesApplied.get(i);
+            if (application[3].equals("A") || application[3].equals("AS") || application[3].equals("ASH")) {
+                acceptedSchools.add(application);  // Add accepted application to the list
+            }
+        }
+
+        // Check if any schools were accepted
+        if (!acceptedSchools.isEmpty()) {
+            // Check if any school is an ED school and enroll automatically if found
+            String enrolledSchool = null;
+            for (String[] application : acceptedSchools) {
+                if (application[1].equalsIgnoreCase("ED")) {  // Assuming the second element in the array is the ED status
+                    enrolledSchool = application[0];
+                    break;  // Automatically enroll in the first ED school found
+                }
+            }
+        
+            if (enrolledSchool != null) {
+                // Automatically enroll at the ED school
+                System.out.println(BRIGHT_GREEN + "You have been automatically enrolled at " + enrolledSchool + " due to Early Decision acceptance!" + RESET);
+                System.out.println();
+            } else {
+                // No ED schools found, allow user to select a school
+                System.out.println("\nEnter the corresponding number of the school you wish to enroll at:");
+                
+                // Display accepted schools
+                for (int i = 0; i < acceptedSchools.size(); i++) {
+                    String[] application = acceptedSchools.get(i);
+                    System.out.println((i + 1) + ": " + application[0]);  // Display the accepted schools
+                }
+        
+                // Ask user for input and enroll in selected school
+                int selectedSchoolIndex = input.nextInt() - 1;  // Get user input, adjusted to 0-based index
+                if (selectedSchoolIndex >= 0 && selectedSchoolIndex < acceptedSchools.size()) {
+                    System.out.println(BRIGHT_GREEN + "You have successfully enrolled at " + acceptedSchools.get(selectedSchoolIndex)[0] + "!" + RESET);
+                    System.out.println();
+                } else {
+                    System.out.println(BRIGHT_RED + "Invalid selection. Please try again." + RESET);
+                    System.out.println();
+                }
+            }
+        } else {
+            // No accepted schools
+            System.out.println(BRIGHT_RED + "Unfortunately, you were not accepted into any of your applied schools." + RESET);
+            System.out.println("We recommend enrolling in your local community college as a next step.");
+            System.out.println();
+        }
+        
 
         input.close();
 }
-
-
 
     public static double weightedGPA(double gpa, int ap_courses) {
         double wgpa = gpa;
@@ -866,6 +1064,9 @@ public class UniversitySimulator {
                 var2 += Math.random() * 1.5;
             }
             var2 = var2 - 1 + Math.random() * 2.5;
+        }
+        if (var2 < 0) {
+            var2 = 0;
         }
 
         // Round to 2 decimal places and return as a string
@@ -1366,7 +1567,7 @@ public class UniversitySimulator {
             multiplier = Double.parseDouble(collegeList[i][3]);
         }
         chances *= ((multiplier - 1) / 2) + 1;
-        chances += Math.random() * 4 - 2; 
+        chances -= Math.random() * 4 - 1; 
         // Ensure final chance is between 0 and 100
         if (interviewScore < 2) {
             chances -= Math.random() * 7;
@@ -1423,7 +1624,6 @@ public class UniversitySimulator {
             return PURPLE + "Huge Reach" + RESET;
         }
     }
-    
 
     public static int classify(double num) {
         if (num >= 96) {
@@ -1459,5 +1659,100 @@ public class UniversitySimulator {
         else {
             return 11;
         }
+    }
+
+    public static String admissionsDecision(double chances, String appType, int collegeIndex, ArrayList<String[]> collegesApplied) {
+        double yourFate = Math.min(Math.random() * 100, Math.random() * 100) + Math.random() * 15;
+        String collegeName = collegesApplied.get(collegeIndex)[0];
+        String reset = "\u001B[0m";
+        String green = "\u001B[32m";
+        String yellow = "\u001B[33m";
+        String blue = "\u001B[34m";
+        String red = "\u001B[31m";
+
+        if (appType.equals("ED")) {
+            if (yourFate < chances - Math.random() * 45) {
+                System.out.println(green + "Congratulations! " + reset + "You have been admitted to " + blue + collegeName + reset + " with a scholarship and honors under Early Decision.");
+                return "ASH";  // Admitted with Scholarship & Honors
+            } else if (yourFate < chances - Math.random() * 22) {
+                System.out.println(green + "Excellent news! " + reset + "You have been admitted to " + blue + collegeName + reset + " with a scholarship under Early Decision.");
+                return "AS";  // Admitted with Scholarship
+            } else if (yourFate < chances) {
+                System.out.println("You have been accepted to " + blue + collegeName + reset + " under Early Decision. " + green + "Congratulations!");
+                return "A";  // Admitted
+            } else if (yourFate < chances + Math.random() * 30) {
+                System.out.println("Your application to " + blue + collegeName + reset + " has been" + yellow + " deferred. We encourage you to remain hopeful and patient as the regular decision process continues.");
+                return "D";  // Deferred
+            } else {
+                System.out.println("We regret to inform you that your application to " + blue + collegeName + reset + " has been " + red + "declined. Please remember that this is only one step in your journey, and many opportunities still lie ahead." + reset);
+                return "R";  // Rejected
+            }
+        } else if (appType.equals("REA")) {
+            // Regular Early Action section
+            if (yourFate < chances - Math.random() * 45) {
+                System.out.println(green + "Wonderful news! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship and honors through Restrictive Early Action.");
+                return "ASH";  // Admitted with Scholarship & Honors
+            } else if (yourFate < chances - Math.random() * 22) {
+                System.out.println(green + "Great news! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship through Restrictive Early Action.");
+                return "AS";  // Admitted with Scholarship
+            } else if (yourFate < chances) {
+                System.out.println(green + "Congratulations! " + reset + "You have been accepted to " + blue + collegeName + reset + " through Restrictive Early Action.");
+                return "A";  // Admitted
+            } else if (yourFate < chances + Math.random() * 25) {
+                System.out.println("Your application to " + blue + collegeName + reset + " has been" + yellow + " deferred. You'll hear back during the regular decision period.");
+                return "D";  // Deferred
+            } else {
+                System.out.println(red + "Unfortunately, your application to " + blue + collegeName + reset + " has been declined. " + reset + "Please continue pursuing other opportunities.");
+                return "R";  // Rejected
+            }
+        } else if (appType.equals("EA")) {
+            // Early Action section
+            if (yourFate < chances - Math.random() * 45) {
+                System.out.println(green + "Fantastic! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship and honors under Early Action.");
+                return "ASH";  // Admitted with Scholarship & Honors
+            } else if (yourFate < chances - Math.random() * 22) {
+                System.out.println(green + "Great news! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship under Early Action.");
+                return "AS";  // Admitted with Scholarship
+            } else if (yourFate < chances) {
+                System.out.println(green + "Congratulations! " + reset + "You have been accepted to " + blue + collegeName + reset + " under Early Action.");
+                return "A";  // Admitted
+            } else if (yourFate < chances + Math.random() * 20) {
+                System.out.println(yellow + "Your application to " + blue + collegeName + reset + " has been deferred. You will receive your final decision in the regular decision round.");
+                return "D";  // Deferred
+            } else {
+                System.out.println(red + "Unfortunately, your application to " + blue + collegeName + reset + " has been declined. " + reset + "Please continue pursuing your academic goals.");
+                return "R";  // Rejected
+            }
+        } else if (appType.equals("RD")) {
+            // Regular Decision section
+            if (yourFate < chances - Math.random() * 45) {
+                System.out.println(green + "Congratulations! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship and honors under Regular Decision.");
+                return "ASH";  // Admitted with Scholarship & Honors
+            } else if (yourFate < chances - Math.random() * 22) {
+                System.out.println(green + "Great news! " + reset + "You have been accepted to " + blue + collegeName + reset + " with a scholarship under Regular Decision.");
+                return "AS";  // Admitted with Scholarship
+            } else if (yourFate < chances) {
+                System.out.println(green + "Congratulations! " + reset + "You have been accepted to " + blue + collegeName + reset + " under Regular Decision.");
+                return "A";  // Admitted
+            } else if (yourFate < chances + Math.random() * 20) {
+                System.out.println(yellow + "You have been placed on the waitlist for " + blue + collegeName + reset + ". You may be offered a spot if space becomes available.");
+                return "W";  // Waitlisted
+            } else {
+                System.out.println(red + "Unfortunately, your application to " + blue + collegeName + reset + " has been declined. " + reset + "We encourage you to pursue other great opportunities.");
+                return "R";  // Rejected
+            }
+        } else if (appType.equals("Waitlist")) {
+            // Waitlist section
+            if (yourFate < chances) {
+                System.out.println(green + "Congratulations! " + reset + "You have been accepted to " + blue + collegeName + reset + " off the waitlist.");
+                return "A";  // Accepted off the waitlist
+            } else {
+                System.out.println(red + "Unfortunately, your application to " + blue + collegeName + reset + " has been declined from the waitlist. " + reset + "We encourage you to explore other opportunities.");
+                return "R";  // Rejected from the waitlist
+            }
+        }
+        
+        
+        return "NO";
     }
 }
